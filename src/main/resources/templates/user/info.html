@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Information about user</title>
+</head>
+<body>
+<div class="user-info">
+    <h2>Information about user</h2>
+
+    <div class="info-row">
+        <strong>Username:</strong>
+        <span th:text="${user.username}"></span>
+    </div>
+
+    <div class="info-row">
+        <strong>Email:</strong>
+        <span th:text="${user.email}"></span>
+    </div>
+
+    <div class="info-row">
+        <strong>user ID:</strong>
+        <span th:text="${user.id}"></span>
+    </div>
+
+    <br/>
+
+    <form th:method="GET" th:action="@{/logout}">
+        <button type="submit">Logout</button>
+    </form>
+
+</div>
+</body>
+</html>
