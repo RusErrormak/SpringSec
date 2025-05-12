@@ -106,12 +106,10 @@ public class UsersServiceImpl implements UsersService {
             existingUser.setUsername(user.getUsername());
             existingUser.setEmail(user.getEmail());
 
-            // Обновляем пароль только если он был изменен
             if (user.getPassword() != null && !user.getPassword().isEmpty()) {
                 existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             }
 
-            // Обновляем роли
             Set<Roles> userRoles = new HashSet<>();
             if (roles != null) {
                 for (String roleName : roles) {
