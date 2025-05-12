@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UsersService userService;
+
+    private final UsersService userService;
 
     @Autowired
     public AdminController(UsersService userService) {
@@ -45,8 +45,9 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute Users user) {
-        userService.update(user);
+    public String updateUser(@ModelAttribute Users user, @RequestParam(value = "selectedRoles", required = false) String selectedRoles) {
+        String[] roles = selectedRoles != null ? selectedRoles.split(",") : new String[0];
+        userService.update(user, roles);
         return "redirect:/admin";
     }
 
@@ -57,8 +58,9 @@ public class AdminController {
     }
 
     @PostMapping("/newUser")
-    public String createUser(@ModelAttribute Users user, @RequestParam String role) {
-        userService.saveUser(user, role);
+    public String createUser(@ModelAttribute Users user, @RequestParam(value = "selectedRoles", required = false) String selectedRoles) {
+        String[] roles = selectedRoles != null ? selectedRoles.split(",") : new String[0];
+        userService.saveUser(user, roles);
         return "redirect:/admin";
     }
 

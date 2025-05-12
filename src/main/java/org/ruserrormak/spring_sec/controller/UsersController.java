@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/user")
 public class UsersController {
 
+
+    private final UsersService userService;
+
     @Autowired
-    private UsersService userService;
+    public UsersController(UsersService userService) { this.userService = userService; }
 
     @GetMapping("/info")
     public String showUserInfo(ModelMap model, Authentication authentication) {

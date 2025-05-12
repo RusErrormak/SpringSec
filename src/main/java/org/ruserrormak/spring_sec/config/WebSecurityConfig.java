@@ -16,8 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+
+    private final LoginSuccessHandler loginSuccessHandler;
+
     @Autowired
-    LoginSuccessHandler loginSuccessHandler;
+    public WebSecurityConfig(LoginSuccessHandler loginSuccessHandler) {
+        this.loginSuccessHandler = loginSuccessHandler;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
