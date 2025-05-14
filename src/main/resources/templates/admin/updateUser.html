@@ -9,7 +9,7 @@
 <form th:method="POST" th:action="@{/admin/update}" th:object="${user}">
     <input type="hidden" name="id" th:value="${user.id}"/>
     <label for="username">username</label>
-    <input name="username" type="text" id="username"/>
+    <input name="username" type="text" id="username" th:value="${user.username}"/>
 
     <br/>
 
@@ -19,23 +19,19 @@
     <br/>
 
     <label for="email">Email</label>
-    <input name="email" type="text" id="email"/>
+    <input name="email" type="text" id="email" th:value="${user.email}"/>
 
     <br/>
 
     <label>Role:</label>
     <div>
         <label>
-            <input type="checkbox" name="selectedRoles" value="ROLE_USER"> User
+            <input type="checkbox" name="selectedRoles" value="ROLE_USER" th:checked="${user.hasRole('ROLE_USER')}" > User
         </label>
         <label>
-            <input type="checkbox" name="selectedRoles" value="ROLE_ADMIN"> Admin
+            <input type="checkbox" name="selectedRoles" value="ROLE_ADMIN" th:checked="${user.hasRole('ROLE_ADMIN')}"> Admin
         </label>
     </div>
-<!--    <select name="role" id="role">-->
-<!--        <option value="ROLE_USER">User</option>-->
-<!--        <option value="ROLE_ADMIN">Admin</option>-->
-<!--    </select>-->
 
     <br/>
 

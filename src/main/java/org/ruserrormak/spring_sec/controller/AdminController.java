@@ -4,6 +4,7 @@ import org.ruserrormak.spring_sec.model.Users;
 import org.ruserrormak.spring_sec.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +39,7 @@ public class AdminController {
     }
 
     @GetMapping("/updateUser")
-    public String showUpdateForm(@RequestParam("id") Long id, ModelMap model) {
+    public String showUpdateForm(@RequestParam("id") Long id, Model model) {
         Users user = userService.getById(id);
         model.addAttribute("user", user);
         return "admin/updateUser";

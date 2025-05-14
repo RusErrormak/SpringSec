@@ -1,7 +1,5 @@
 package org.ruserrormak.spring_sec.service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.ruserrormak.spring_sec.model.Roles;
 import org.ruserrormak.spring_sec.model.Users;
 import org.ruserrormak.spring_sec.repository.RolesRepository;
@@ -19,10 +17,6 @@ import java.util.*;
 @Service
 public class UsersServiceImpl implements UsersService {
 
-    @PersistenceContext
-    private EntityManager em;
-
-
     private final UsersRepository usersRepository;
 
     private final RolesRepository rolesRepository;
@@ -37,8 +31,6 @@ public class UsersServiceImpl implements UsersService {
         this.rolesRepository = rolesRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
-
 
     @Transactional
     @Override
@@ -94,35 +86,34 @@ public class UsersServiceImpl implements UsersService {
     @Transactional
     @Override
     public Users getById(Long id) {
-        return em.find(Users.class, id);
-    }
+        return usersRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));    }
 
     @Transactional
     @Override
     public void update(Users user, String[] roles) {
-        Users existingUser = em.find(Users.class, user.getId());
-        if (existingUser != null) {
+        Users existingUser =  usersRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + user.getId()));
 
-            existingUser.setUsername(user.getUsername());
-            existingUser.setEmail(user.getEmail());
+        existingUser.setUsername(user.getUsername());
+        existingUser.setEmail(user.getEmail());
 
-            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-                existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            }
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
 
-            Set<Roles> userRoles = new HashSet<>();
-            if (roles != null) {
-                for (String roleName : roles) {
-                    Roles role = rolesRepository.findByName(roleName);
-                    if (role != null) {
-                        userRoles.add(role);
-                    }
+        Set<Roles> userRoles = new HashSet<>();
+        if (roles != null) {
+            for (String roleName : roles) {
+                Roles role = rolesRepository.findByName(roleName);
+                if (role != null) {
+                    userRoles.add(role);
                 }
             }
-            existingUser.setRoles(userRoles);
-
-            em.merge(existingUser);
         }
+        existingUser.setRoles(userRoles);
+
+        usersRepository.save(existingUser);
     }
 
 }

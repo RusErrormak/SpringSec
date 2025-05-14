@@ -78,6 +78,11 @@ public class Users implements UserDetails {
 
    public void setRoles(Set<Roles> roles) { this.roles = roles; }
 
+   public boolean hasRole(String roleName) {
+      return roles.stream()
+              .anyMatch(role -> role.getName().equals(roleName));
+   }
+
    @Override
    public boolean isAccountNonExpired() {
       return true;
